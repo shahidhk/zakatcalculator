@@ -10,7 +10,7 @@ import {
   Container,
 
 } from 'react-bootstrap';
-import ZakatCalculator from './ZakatCalculator';
+import ZakatCalculator from './Components/ZakatCalculator';
 
 function App() {
   return (<>
