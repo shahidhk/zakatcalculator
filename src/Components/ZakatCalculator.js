@@ -54,109 +54,106 @@ class ZakatCalculator extends React.Component {
       loans_bank: "",
       income_tax: "",
       sums:{
-        gold_24: 0, 
-        gold_22: 0, 
-        gold_other: 0, 
-        precious_stones: 0, 
-        ornaments: 0, 
-        artifact: 0, 
-        household_utensils: 0, 
-        cash_hand: 0, 
-        cash_savings_account: 0, 
-        cash_current_account: 0, 
-        cash_fd: 0, 
-        loans: 0, 
-        investment: 0, 
-        pf: 0, 
-        insurance_premium: 0, 
-        shares: 2, 
-        govt_security_deposits: 0, 
-        investment_chits: 0, 
-        other_wealth: 0, 
-        rent_advance: 0, 
-        landed_prop: 0, 
-        rentals: 0, 
-        saleable_stock: 0, 
-        damaged_stock: 0, 
-        credit_sales: 0, 
-        supplier: 0, 
-        bad_debts: 0, 
-        capital_balance: 0, 
-        loans_advanced: 0, 
-        withdrawals: 0, 
-        profit: 0, 
-        produce_rain: 0, 
-        produce_artificial: 0, 
-        produce_rain_artificial: 0, 
-        animals: 0, 
-        loans_friends: 0, 
-        loans_bank: 0, 
-        income_tax: 0, 
+        gold_24: 0,
+        gold_22: 0,
+        gold_other: 0,
+        precious_stones: 0,
+        ornaments: 0,
+        artifact: 0,
+        household_utensils: 0,
+        cash_hand: 0,
+        cash_savings_account: 0,
+        cash_current_account: 0,
+        cash_fd: 0,
+        loans: 0,
+        investment: 0,
+        pf: 0,
+        insurance_premium: 0,
+        shares: 2,
+        govt_security_deposits: 0,
+        investment_chits: 0,
+        other_wealth: 0,
+        rent_advance: 0,
+        landed_prop: 0,
+        rentals: 0,
+        saleable_stock: 0,
+        damaged_stock: 0,
+        credit_sales: 0,
+        supplier: 0,
+        bad_debts: 0,
+        capital_balance: 0,
+        loans_advanced: 0,
+        withdrawals: 0,
+        profit: 0,
+        produce_rain: 0,
+        produce_artificial: 0,
+        produce_rain_artificial: 0,
+        animals: 0,
+        loans_friends: 0,
+        loans_bank: 0,
+        income_tax: 0,
       },
       sums1:{
-        pay_gold_24: 0, 
-        pay_gold_22: 0, 
-        pay_gold_other: 0, 
-        pay_precious_stones: 0, 
-        pay_ornaments: 0, 
-        pay_artifact: 0, 
-        pay_household_utensils: 0, 
-        pay_cash_hand: 0, 
-        pay_cash_savings_account: 0, 
-        pay_cash_current_account: 0, 
-        pay_cash_fd: 0, 
-        pay_loans: 0, 
-        pay_investment: 0, 
-        pay_pf: 0, 
-        pay_insurance_premium: 0, 
-        pay_shares: 2, 
-        pay_govt_security_deposits: 0, 
-        pay_investment_chits: 0, 
-        pay_other_wealth: 0, 
-        pay_rent_advance: 0, 
-        pay_landed_prop: 0, 
-        pay_rentals: 0, 
-        pay_saleable_stock: 0, 
-        pay_damaged_stock: 0, 
-        pay_credit_sales: 0, 
-        pay_supplier: 0, 
-        pay_bad_debts: 0, 
-        pay_capital_balance: 0, 
-        pay_loans_advanced: 0, 
-        pay_withdrawals: 0, 
-        pay_profit: 0, 
-        pay_produce_rain: 0, 
-        pay_produce_artificial: 0, 
-        pay_produce_rain_artificial: 0, 
-        pay_animals: 0, 
-        pay_loans_friends: 0, 
-        pay_loans_bank: 0, 
-        pay_income_tax: 0, 
+        pay_gold_24: 0,
+        pay_gold_22: 0,
+        pay_gold_other: 0,
+        pay_precious_stones: 0,
+        pay_ornaments: 0,
+        pay_artifact: 0,
+        pay_household_utensils: 0,
+        pay_cash_hand: 0,
+        pay_cash_savings_account: 0,
+        pay_cash_current_account: 0,
+        pay_cash_fd: 0,
+        pay_loans: 0,
+        pay_investment: 0,
+        pay_pf: 0,
+        pay_insurance_premium: 0,
+        pay_shares: 2,
+        pay_govt_security_deposits: 0,
+        pay_investment_chits: 0,
+        pay_other_wealth: 0,
+        pay_rent_advance: 0,
+        pay_landed_prop: 0,
+        pay_rentals: 0,
+        pay_saleable_stock: 0,
+        pay_damaged_stock: 0,
+        pay_credit_sales: 0,
+        pay_supplier: 0,
+        pay_bad_debts: 0,
+        pay_capital_balance: 0,
+        pay_loans_advanced: 0,
+        pay_withdrawals: 0,
+        pay_profit: 0,
+        pay_produce_rain: 0,
+        pay_produce_artificial: 0,
+        pay_produce_rain_artificial: 0,
+        pay_animals: 0,
+        pay_loans_friends: 0,
+        pay_loans_bank: 0,
+        pay_income_tax: 0,
       }
     };
     this.handleChange = this.handleChange.bind(this);
   }
   handleChange(event) {
     this.setState({
-      [event.target.name]: event.target.value,
-      [event.target.sums]: { ...this.state[event.target.sums], name: event.target.getAttribute('z') },  
-      // [event.target.name]: event.target.getAttribute('z'),
-
-      
+      [event.currentTarget.name]: event.currentTarget.value,
+      sums: {
+        ...this.state.sums,
+        [event.currentTarget.name]: event.currentTarget.value * 0.025,
+      },
     });
-    console.log(event.target.getAttribute('data-z'))
-    console.log(event.target.dataset.z)
-    console.log(event.target.value)
   }
 
   // payableZakat= () =>
 
   calculate = (obj) =>
     Object.keys(obj).reduce(
-      (sum,key) => sum+obj[key], 
+      (sum,key) => sum+obj[key],
       0
     )
-  
+
   render() {
     const intro = [
       {
@@ -234,7 +231,7 @@ class ZakatCalculator extends React.Component {
             type: "number",
             zakatpay: 0.025,
             calc: () => {
-              return "₹"+this.state.gold_24_rate * this.state.gold_24 * 0.025;
+              return this.state.gold_24_rate * this.state.gold_24 * 0.025;
             }
           },
           {
@@ -243,7 +240,7 @@ class ZakatCalculator extends React.Component {
             placeholder: "0.00 gram",
             type: "number",
             calc: () => {
-              return "₹"+this.state.gold_22_rate * this.state.gold_22 * 0.025;
+              return this.state.gold_22_rate * this.state.gold_22 * 0.025;
             },
             zakatpay: 0.025
           },
@@ -253,7 +250,7 @@ class ZakatCalculator extends React.Component {
             placeholder: "0.00 gram",
             type: "number",
             calc: () => {
-              return "₹"+this.state.gold_22_rate * this.state.gold_other * 0.025;
+              return this.state.gold_22_rate * this.state.gold_other * 0.025;
             },
             zakatpay: 0.025
           }
@@ -282,7 +279,7 @@ class ZakatCalculator extends React.Component {
             type: "number",
             zakatpay: 0.025,
             calc: () => {
-              return "₹"+this.state.ornaments * this.state.silver_rate * 0.025;
+              return this.state.ornaments * this.state.silver_rate * 0.025;
             }
           },
           {
@@ -292,7 +289,7 @@ class ZakatCalculator extends React.Component {
             type: "number",
             zakatpay: 0.025,
             calc: () => {
-              return "₹"+this.state.artifact * this.state.silver_rate * 0.025;
+              return this.state.artifact * this.state.silver_rate * 0.025;
             }
           },
           {
@@ -303,7 +300,7 @@ class ZakatCalculator extends React.Component {
             zakatpay: 0.025,
             calc: () => {
               return (
-                "₹"+this.state.household_utensils *
+                this.state.household_utensils *
                 this.state.silver_rate *
                 0.025 *
                 0.9
@@ -668,7 +665,7 @@ class ZakatCalculator extends React.Component {
                     <h3 key={idx}>{title}</h3>
                     <hr key={"hr." + idx} />
                     {rows.map((row, idy) => {
-                      
+
                         return (
                           <FormElement
                             key={`${idx}.${idy}`}
@@ -679,7 +676,7 @@ class ZakatCalculator extends React.Component {
                             // value={this.state[row.value]}
                             value={this.state[row.name]}
                             onChange={this.handleChange}
-                            zakatpay={"₹" + this.state[row.name] * row.zakatpay}
+                            payable={this.state.sums[row.name]}
                           >
                             {row.label}
                           </FormElement>
@@ -689,7 +686,7 @@ class ZakatCalculator extends React.Component {
                   </>
                 );
               })}
-  
+
               {rows.map(({ title, rows }, idx) => {
                 return (
                   <>
@@ -707,8 +704,7 @@ class ZakatCalculator extends React.Component {
                             // value={this.state[row.value]}
                             value={this.state[row.name]}
                             onChange={this.handleChange}
-                            zakatpay={row.calc()}
-                            data-z={row.calc()}
+                            payable={this.state.sums[row.name]}
                           >
                             {row.label}
                           </FormElement>
@@ -721,12 +717,9 @@ class ZakatCalculator extends React.Component {
                             type={row.type}
                             name={row.name}
                             placeholder={row.placeholder}
-                            // value={this.state[row.value]}
                             value={this.state[row.name]}
                             onChange={this.handleChange}
-                            zakatpay={"₹" + this.state[row.name] * row.zakatpay}
-                            data-z={this.state[row.name] * row.zakatpay}
-                            
+                            payable={this.state.sums[row.name]}
                           >
                             {row.label}
                           </FormElement>
