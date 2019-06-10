@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import { Container, Row, Col, Form } from "react-bootstrap";
 import FormElement from "./FormElement";
 
 class ZakatCalculator extends React.Component {
@@ -53,6 +53,11 @@ class ZakatCalculator extends React.Component {
       loans_friends: "",
       loans_bank: "",
       income_tax: "",
+      rate:{
+        gold_24_rate: 0,
+        gold_22_rate: 0,
+        silver_rate: 0,
+      },
       sums:{
         gold_24: 0,
         gold_22: 0,
@@ -69,7 +74,7 @@ class ZakatCalculator extends React.Component {
         investment: 0,
         pf: 0,
         insurance_premium: 0,
-        shares: 2,
+        shares: 0,
         govt_security_deposits: 0,
         investment_chits: 0,
         other_wealth: 0,
@@ -93,57 +98,111 @@ class ZakatCalculator extends React.Component {
         loans_bank: 0,
         income_tax: 0,
       },
-      sums1:{
-        pay_gold_24: 0,
-        pay_gold_22: 0,
-        pay_gold_other: 0,
-        pay_precious_stones: 0,
-        pay_ornaments: 0,
-        pay_artifact: 0,
-        pay_household_utensils: 0,
-        pay_cash_hand: 0,
-        pay_cash_savings_account: 0,
-        pay_cash_current_account: 0,
-        pay_cash_fd: 0,
-        pay_loans: 0,
-        pay_investment: 0,
-        pay_pf: 0,
-        pay_insurance_premium: 0,
-        pay_shares: 2,
-        pay_govt_security_deposits: 0,
-        pay_investment_chits: 0,
-        pay_other_wealth: 0,
-        pay_rent_advance: 0,
-        pay_landed_prop: 0,
-        pay_rentals: 0,
-        pay_saleable_stock: 0,
-        pay_damaged_stock: 0,
-        pay_credit_sales: 0,
-        pay_supplier: 0,
-        pay_bad_debts: 0,
-        pay_capital_balance: 0,
-        pay_loans_advanced: 0,
-        pay_withdrawals: 0,
-        pay_profit: 0,
-        pay_produce_rain: 0,
-        pay_produce_artificial: 0,
-        pay_produce_rain_artificial: 0,
-        pay_animals: 0,
-        pay_loans_friends: 0,
-        pay_loans_bank: 0,
-        pay_income_tax: 0,
-      }
     };
     this.handleChange = this.handleChange.bind(this);
   }
   handleChange(event) {
     this.setState({
-      [event.currentTarget.name]: event.currentTarget.value,
-      sums: {
-        ...this.state.sums,
-        [event.currentTarget.name]: event.currentTarget.value * 0.025,
-      },
+      [event.currentTarget.name]: event.currentTarget.value,     
     });
+    switch(event.currentTarget.name) {
+      case 'gold_24':
+      case 'gold_other':
+        this.setState({
+          sums: {
+            ...this.state.sums,
+              [event.currentTarget.name]: event.currentTarget.value * 0.025 * this.state.gold_24_rate
+          },
+        });
+        break;
+      case 'gold_22':
+        this.setState({
+          sums: {
+            ...this.state.sums,
+              [event.currentTarget.name]: event.currentTarget.value * 0.025 * this.state.gold_22_rate
+          },
+        });
+        break;
+      
+      case 'ornaments':
+      case 'artifact':
+        this.setState({
+          sums: {
+            ...this.state.sums,
+              [event.currentTarget.name]: event.currentTarget.value * 0.025 * this.state.silver_rate
+          },
+        });
+        break;
+      case 'household_utensils':
+          this.setState({
+            sums: {
+              ...this.state.sums,
+                [event.currentTarget.name]: event.currentTarget.value * 0.9 * 0.025 * this.state.silver_rate
+            },
+          });
+          break;
+      case 'produce_rain':
+          this.setState({
+            sums: {
+              ...this.state.sums,
+                [event.currentTarget.name]: event.currentTarget.value * 0.1
+            },
+          });
+          break;
+      case 'produce_artificial':
+          this.setState({
+            sums: {
+              ...this.state.sums,
+                [event.currentTarget.name]: event.currentTarget.value * 0.05
+            },
+          });
+          break;  
+      case 'produce_rain_artificial':
+        this.setState({
+          sums: {
+            ...this.state.sums,
+              [event.currentTarget.name]: event.currentTarget.value * 0.075
+          },
+        });
+        break;       
+      case 'supplier':
+      case 'withdrawals':
+      case 'bad_debts':
+      case 'loan_friends':
+      case 'loan_bank':
+      case 'income_tax':    
+        this.setState({
+          sums: {
+            ...this.state.sums,
+              [event.currentTarget.name]: event.currentTarget.value * -0.025
+          },
+        });
+        break; 
+      case 'gold_24_rate':
+      case 'gold_22_rate':    
+        this.setState({
+          rate: {
+            ...this.state.rate,
+              [event.currentTarget.name]: event.currentTarget.value * 8
+          },
+        });
+        break;
+      case 'silver_rate':    
+        this.setState({
+          rate: {
+            ...this.state.rate,
+              [event.currentTarget.name]: event.currentTarget.value 
+          },
+        });
+        break;            
+      default:
+        this.setState({
+          sums: {
+            ...this.state.sums, 
+              [event.currentTarget.name]: event.currentTarget.value * 0.025
+          },
+        })
+    } 
   }
 
   // payableZakat= () =>
@@ -676,7 +735,7 @@ class ZakatCalculator extends React.Component {
                             // value={this.state[row.value]}
                             value={this.state[row.name]}
                             onChange={this.handleChange}
-                            payable={this.state.sums[row.name]}
+                            payable={this.state.rate[row.name]}
                           >
                             {row.label}
                           </FormElement>
@@ -729,13 +788,20 @@ class ZakatCalculator extends React.Component {
                   </>
                 );
               })}
-              <Button block variant="primary" type="submit">
+              {/* <Button block variant="primary" type="submit">
                 Submit
               </Button>
-              <br />
+              <br /> */}
             </Form>
           </Col>
         </Row>
+        <Row>
+          <Col sm="6"></Col>
+          <Col sm="4"><b>Total</b></Col>
+          <Col sm="2">₹{this.calculate(this.state.sums)}</Col>
+          
+        </Row>
+        <br/>
       </Container>
     );
   }
