@@ -168,8 +168,8 @@ class ZakatCalculator extends React.Component {
       case 'supplier':
       case 'withdrawals':
       case 'bad_debts':
-      case 'loan_friends':
-      case 'loan_bank':
+      case 'loans_friends':
+      case 'loans_bank':
       case 'income_tax':    
         this.setState({
           sums: {
@@ -799,7 +799,7 @@ class ZakatCalculator extends React.Component {
           <Col sm="6"></Col>
           <Col sm="4"><b>Total</b></Col>
           <Col sm="2">₹{this.calculate(this.state.sums)}</Col>
-          
+              
         </Row>
         <br/>
       </Container>
