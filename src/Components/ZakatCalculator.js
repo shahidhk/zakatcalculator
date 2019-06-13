@@ -6,7 +6,6 @@ class ZakatCalculator extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // this.state[row.name] = ''
       date: "",
       total_assests: "",
       nisab_calc: "",
