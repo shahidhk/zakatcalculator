@@ -1,59 +1,71 @@
 import React from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import FormElement from "./FormElement";
-import '../index.css';
+import "../index.css";
 
 class ZakatCalculator extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {    
-      // date: "",
-      // total_assests: "",
-      // nisab_calc: "",
-      // zakat_pay: "",
-      // zakat_amount: "",
-      gold_24_rate: "",
-      gold_22_rate: "",
-      silver_rate: "",
-      gold_24: "",
-      gold_22: "",
-      gold_other: "",
-      precious_stones: "",
-      ornaments: "",
-      artifact: "",
-      household_utensils: "",
-      cash_hand: "",
-      cash_savings_account: "",
-      cash_current_account: "",
-      cash_fd: "",
-      loans: "",
-      investment: "",
-      pf: "",
-      insurance_premium: "",
-      shares: "",
-      govt_security_deposits: "",
-      investment_chits: "",
-      other_wealth: "",
-      rent_advance: "",
-      landed_prop: "",
-      rentals: "",
-      saleable_stock: "",
-      damaged_stock: "",
-      credit_sales: "",
-      supplier: "",
-      bad_debts: "",
-      capital_balance: "",
-      loans_advanced: "",
-      withdrawals: "",
-      profit: "",
-      produce_rain: "",
-      produce_artificial: "",
-      produce_rain_artificial: "",
-      animals: "",
-      loans_friends: "",
-      loans_bank: "",
-      income_tax: "",
-      raw:{
+    this.state = {
+      total_assests: 0,
+      intro: {
+        date: "",
+        total_assests: "",
+        nisab_calc: "",
+        zakat_pay: "",
+        zakat_amount: ""
+      },
+      raw_rate: {
+        gold_24_rate: "",
+        gold_22_rate: "",
+        silver_rate: ""
+      },
+      raw: {
+        gold_24: "",
+        gold_22: "",
+        gold_other: "",
+        precious_stones: "",
+        ornaments: "",
+        artifact: "",
+        household_utensils: "",
+        cash_hand: "",
+        cash_savings_account: "",
+        cash_current_account: "",
+        cash_fd: "",
+        loans: "",
+        investment: "",
+        pf: "",
+        insurance_premium: "",
+        shares: "",
+        govt_security_deposits: "",
+        investment_chits: "",
+        other_wealth: "",
+        rent_advance: "",
+        landed_prop: "",
+        rentals: "",
+        saleable_stock: "",
+        damaged_stock: "",
+        credit_sales: "",
+        supplier: "",
+        bad_debts: "",
+        capital_balance: "",
+        loans_advanced: "",
+        withdrawals: "",
+        profit: "",
+        produce_rain: "",
+        produce_artificial: "",
+        produce_rain_artificial: "",
+        animals: "",
+        loans_friends: "",
+        loans_bank: "",
+        income_tax: ""
+      },
+      rate: {
+        gold_24_rate: 0,
+        gold_22_rate: 0,
+        silver_rate: 0
+      },
+      sums: {
         gold_24: 0,
         gold_22: 0,
         gold_other: 0,
@@ -92,176 +104,196 @@ class ZakatCalculator extends React.Component {
         loans_friends: 0,
         loans_bank: 0,
         income_tax: 0
-      },
-      rate:{
-        gold_24_rate: 0,
-        gold_22_rate: 0,
-        silver_rate: 0,
-      },
-      sums:{
-        gold_24: 0,
-        gold_22: 0,
-        gold_other: 0,
-        precious_stones: 0,
-        ornaments: 0,
-        artifact: 0,
-        household_utensils: 0,
-        cash_hand: 0,
-        cash_savings_account: 0,
-        cash_current_account: 0,
-        cash_fd: 0,
-        loans: 0,
-        investment: 0,
-        pf: 0,
-        insurance_premium: 0,
-        shares: 0,
-        govt_security_deposits: 0,
-        investment_chits: 0,
-        other_wealth: 0,
-        rent_advance: 0,
-        landed_prop: 0,
-        rentals: 0,
-        saleable_stock: 0,
-        damaged_stock: 0,
-        credit_sales: 0,
-        supplier: 0,
-        bad_debts: 0,
-        capital_balance: 0,
-        loans_advanced: 0,
-        withdrawals: 0,
-        profit: 0,
-        produce_rain: 0,
-        produce_artificial: 0,
-        produce_rain_artificial: 0,
-        animals: 0,
-        loans_friends: 0,
-        loans_bank: 0,
-        income_tax: 0,
-      },
+      }
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleRateChange = this.handleRateChange.bind(this);
+    this.handleIntroChange = this.handleIntroChange.bind(this);
+    this.getTotal = this.getTotal.bind(this);
+  }
+
+  handleIntroChange(event) {
+    this.setState({
+      intro: {
+        ...this.state.intro,
+        [event.currentTarget.name]: event.currentTarget.value
+      }
+    });
+  }
+  handleRateChange(event) {
+    this.setState({
+      raw_rate: {
+        ...this.state.raw_rate,
+        [event.currentTarget.name]: event.currentTarget.value
+      }
+    });
+    switch (event.currentTarget.name) {
+      case "gold_24_rate":
+      case "gold_22_rate":
+        this.setState({
+          rate: {
+            ...this.state.rate,
+            [event.currentTarget.name]: event.currentTarget.value * 8
+          }
+        });
+        break;
+      default:
+        this.setState({
+          rate: {
+            ...this.state.rate,
+            [event.currentTarget.name]: event.currentTarget.value
+          }
+        });
+        break;
+    }
   }
   handleChange(event) {
     this.setState({
-      [event.currentTarget.name]: event.currentTarget.value,    
+      // [event.currentTarget.name]: event.currentTarget.value,
       raw: {
         ...this.state.raw,
-          [event.currentTarget.name]: event.currentTarget.value * 1
-      }, 
+        [event.currentTarget.name]: event.currentTarget.value
+      }
     });
-    
-    switch(event.currentTarget.name) {
-      case 'gold_24':
-      case 'gold_other':
+
+    switch (event.currentTarget.name) {
+      case "gold_24":
+      case "gold_other":
         this.setState({
           sums: {
             ...this.state.sums,
-              [event.currentTarget.name]: event.currentTarget.value * 0.025 * this.state.gold_24_rate
-          },
+            [event.currentTarget.name]:
+              event.currentTarget.value *
+              0.025 *
+              this.state.raw_rate.gold_24_rate
+          }
         });
         break;
-      case 'gold_22':
+      case "gold_22":
         this.setState({
           sums: {
             ...this.state.sums,
-              [event.currentTarget.name]: event.currentTarget.value * 0.025 * this.state.gold_22_rate
-          },
+            [event.currentTarget.name]:
+              event.currentTarget.value *
+              0.025 *
+              this.state.raw_rate.gold_22_rate
+          }
         });
         break;
-      
-      case 'ornaments':
-      case 'artifact':
+
+      case "ornaments":
+      case "artifact":
         this.setState({
           sums: {
             ...this.state.sums,
-              [event.currentTarget.name]: event.currentTarget.value * 0.025 * this.state.silver_rate
-          },
+            [event.currentTarget.name]:
+              event.currentTarget.value *
+              0.025 *
+              this.state.raw_rate.silver_rate
+          }
         });
         break;
-      case 'household_utensils':
-          this.setState({
-            sums: {
-              ...this.state.sums,
-                [event.currentTarget.name]: event.currentTarget.value * 0.9 * 0.025 * this.state.silver_rate
-            },
-          });
-          break;
-      case 'produce_rain':
-          this.setState({
-            sums: {
-              ...this.state.sums,
-                [event.currentTarget.name]: event.currentTarget.value * 0.1
-            },
-          });
-          break;
-      case 'produce_artificial':
-          this.setState({
-            sums: {
-              ...this.state.sums,
-                [event.currentTarget.name]: event.currentTarget.value * 0.05
-            },
-          });
-          break;  
-      case 'produce_rain_artificial':
+      case "household_utensils":
         this.setState({
           sums: {
             ...this.state.sums,
-              [event.currentTarget.name]: event.currentTarget.value * 0.075
-          },
-        });
-        break;       
-      case 'supplier':
-      case 'withdrawals':
-      case 'bad_debts':
-      case 'loans_friends':
-      case 'loans_bank':
-      case 'income_tax':    
-        this.setState({
-          sums: {
-            ...this.state.sums,
-              [event.currentTarget.name]: event.currentTarget.value * -0.025
-          },
-        });
-        break; 
-      case 'gold_24_rate':
-      case 'gold_22_rate':    
-        this.setState({
-          rate: {
-            ...this.state.rate,
-              [event.currentTarget.name]: event.currentTarget.value * 8
-          },
+            [event.currentTarget.name]:
+              event.currentTarget.value *
+              0.9 *
+              0.025 *
+              this.state.raw_rate.silver_rate
+          }
         });
         break;
-      case 'silver_rate':    
+      case "produce_rain":
         this.setState({
-          rate: {
-            ...this.state.rate,
-              [event.currentTarget.name]: event.currentTarget.value 
-          },
+          sums: {
+            ...this.state.sums,
+            [event.currentTarget.name]: event.currentTarget.value * 0.1
+          }
         });
-        break;            
+        break;
+      case "produce_artificial":
+        this.setState({
+          sums: {
+            ...this.state.sums,
+            [event.currentTarget.name]: event.currentTarget.value * 0.05
+          }
+        });
+        break;
+      case "produce_rain_artificial":
+        this.setState({
+          sums: {
+            ...this.state.sums,
+            [event.currentTarget.name]: event.currentTarget.value * 0.075
+          }
+        });
+        break;
+      case "supplier":
+      case "withdrawals":
+      case "bad_debts":
+      case "loans_friends":
+      case "loans_bank":
+      case "income_tax":
+        this.setState({
+          sums: {
+            ...this.state.sums,
+            [event.currentTarget.name]: event.currentTarget.value * -0.025
+          }
+        });
+        break;
       default:
         this.setState({
           sums: {
-            ...this.state.sums, 
-              [event.currentTarget.name]: event.currentTarget.value * 0.025
-          },
-        })
-    } 
+            ...this.state.sums,
+            [event.currentTarget.name]: event.currentTarget.value * 0.025
+          }
+        });
+    }
+  }
+  
+  getTotal(event) {
+    this.setState({
+      // total_assests: this.calculateTotal(this.state.raw),
+      total_assests: event.target.value
+    });
   }
 
-  // payableZakat= () =>
+  calculateTotal(obj) {
+    var sum = 0;
+    for (var key in obj) {
+      if (key === "gold_24" || key === "gold_other") {
+        sum = sum + obj[key] * this.state.raw_rate.gold_24_rate;
+      } else if (key === "gold_22") {
+        sum = sum + obj[key] * this.state.raw_rate.gold_22_rate;
+      } else if (
+        key === "ornaments" ||
+        key === "artifact" ||
+        key === "household_utensils"
+      ) {
+        sum = sum + obj[key] * this.state.raw_rate.silver_rate;
+      } else if (
+        key === "supplier" ||
+        key === "withdrawals" ||
+        key === "bad_debts" ||
+        key === "loans_friends" ||
+        key === "loans_bank" ||
+        key === "income_tax"
+      ) {
+        sum = sum + obj[key] * -1;
+      } else {
+        sum = sum + obj[key] * 1;
+      }
+    }
+    return sum;
+  }
 
-  calculate = (obj) =>
-    Object.keys(obj).reduce(
-      (sum,key) => sum+obj[key],
-      0
-    )
-  
-  formatINR = (amount) => {
-    return amount.toLocaleString('en-IN', {
-      style: 'currency',
-      currency: 'INR',
+  calculate = obj => Object.keys(obj).reduce((sum, key) => sum + obj[key], 0);
+
+  formatINR = amount => {
+    return amount.toLocaleString("en-IN", {
+      style: "currency",
+      currency: "INR"
     });
   };
 
@@ -330,9 +362,10 @@ class ZakatCalculator extends React.Component {
             zakatpay: 1
           }
         ]
-      }]
+      }
+    ];
     const rows = [
-        {
+      {
         title: "Zakat on Gold",
         rows: [
           {
@@ -689,29 +722,28 @@ class ZakatCalculator extends React.Component {
           <Col>
             <Form>
               <div className={"sticky"}>
-              
-              <Form.Group as={Row}>
-                <Form.Label column sm="8">
-                  {intro[0].rows[0].label}
-                </Form.Label>
-                <Col sm="4">
-                  <Form.Control
-                    id={intro[0].rows[0].name}
-                    type={intro[0].rows[0].type}
-                    placeholder={intro[0].rows[0].placeholder}
-                    name={intro[0].rows[0].name}
-                    value={this.state[intro[0].rows[0].name]}
-                    onChange={this.handleChange}
-                  />
-                </Col>
-              </Form.Group>
+                <Form.Group as={Row}>
+                  <Form.Label column sm="8">
+                    {intro[0].rows[0].label}
+                  </Form.Label>
+                  <Col sm="4">
+                    <Form.Control
+                      id={intro[0].rows[0].name}
+                      type={intro[0].rows[0].type}
+                      placeholder={intro[0].rows[0].placeholder}
+                      name={intro[0].rows[0].name}
+                      value={this.state.intro[intro[0].rows[0].name]}
+                      onChange={this.handleIntroChange}
+                    />
+                  </Col>
+                </Form.Group>
 
-              <Form.Group as={Row}>
-                <Form.Label column sm="8">
-                  {intro[0].rows[1].label}
-                </Form.Label>
-                <Col sm="4">
-                  {/* <Form.Control
+                <Form.Group as={Row}>
+                  <Form.Label column sm="8">
+                    {intro[0].rows[1].label}
+                  </Form.Label>
+                  <Col sm="4">
+                    {/* <Form.Control
                     step="0.01"
                     id={intro[0].rows[1].name}
                     type={intro[0].rows[1].type}
@@ -719,85 +751,89 @@ class ZakatCalculator extends React.Component {
                     name={intro[0].rows[1].name}
                     value={this.formatINR(this.calculate(this.state.raw))}
                   /> */}
-                  <div>{this.formatINR(this.calculate(this.state.raw))}</div>
-                </Col>
-              </Form.Group>
-              <Form.Group as={Row}>
-                <Form.Label column sm="8">
-                  {intro[0].rows[2].label}
-                </Form.Label>
-                <Col sm="4">
-                  <Form.Control
-                    as="select"
-                    id={intro[0].rows[2].name}
-                    type={intro[0].rows[2].type}
-                    placeholder={intro[0].rows[2].placeholder}
-                    name={intro[0].rows[2].name}
-                    value={this.state[intro[0].rows[2].name]}
-                    onChange={this.handleChange}
-                  >
-                    <option>Gold</option>
-                    <option>Silver</option>
-                  </Form.Control>
-                </Col>
-              </Form.Group>
-              <Form.Group as={Row}>
-                <Form.Label column sm="8">
-                  {intro[0].rows[3].label}
-                </Form.Label>
-                <Col sm="4">
-                  <Form.Control
-                    id={intro[0].rows[3].name}
-                    type={intro[0].rows[3].type}
-                    placeholder={intro[0].rows[3].placeholder}
-                    name={intro[0].rows[3].name}
-                    value={this.state[intro[0].rows[3].name]}
-                    onChange={this.handleChange}
-                  />
-                </Col>
-              </Form.Group>
-              <Form.Group as={Row}>
-                <Form.Label column sm="8">
-                  {intro[0].rows[4].label}
-                </Form.Label>
-                <Col sm="4">
-                  <Form.Control
-                    id={intro[0].rows[4].name}
-                    type={intro[0].rows[4].type}
-                    placeholder={intro[0].rows[4].placeholder}
-                    name={intro[0].rows[4].name}
-                    value={this.state[intro[0].rows[4].name]}
-                    onChange={this.handleChange}
-                    step="0.01"
-                  />
-                </Col>
-              </Form.Group>
+                    <div>
+                      {this.formatINR(this.calculateTotal(this.state.raw))}
+                    </div>
+                    {/* <Button onClick={this.getTotal}>Click</Button>
+                    <div>{this.state.total_assests}{console.log(this.state.total_assests)}</div> */}
+                  </Col>
+                </Form.Group>
+
+                <Form.Group as={Row}>
+                  <Form.Label column sm="8">
+                    {intro[0].rows[2].label}
+                  </Form.Label>
+                  <Col sm="4">
+                    <Form.Control
+                      as="select"
+                      id={intro[0].rows[2].name}
+                      type={intro[0].rows[2].type}
+                      placeholder={intro[0].rows[2].placeholder}
+                      name={intro[0].rows[2].name}
+                      value={this.state.intro[intro[0].rows[2].name]}
+                      onChange={this.handleIntroChange}
+                    >
+                      <option>Gold</option>
+                      <option>Silver</option>
+                    </Form.Control>
+                  </Col>
+                </Form.Group>
+
+                <Form.Group as={Row}>
+                  <Form.Label column sm="8">
+                    {intro[0].rows[3].label}
+                  </Form.Label>
+                  <Col sm="4">
+                    <Form.Control
+                      id={intro[0].rows[3].name}
+                      type={intro[0].rows[3].type}
+                      placeholder={intro[0].rows[3].placeholder}
+                      name={intro[0].rows[3].name}
+                      value={this.state.intro[intro[0].rows[3].name]}
+                      onChange={this.handleIntroChange}
+                    />
+                  </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                  <Form.Label column sm="8">
+                    {intro[0].rows[4].label}
+                  </Form.Label>
+                  <Col sm="4">
+                    <Form.Control
+                      id={intro[0].rows[4].name}
+                      type={intro[0].rows[4].type}
+                      placeholder={intro[0].rows[4].placeholder}
+                      name={intro[0].rows[4].name}
+                      value={this.state.intro[intro[0].rows[4].name]}
+                      onChange={this.handleIntroChange}
+                      step="0.01"
+                    />
+                  </Col>
+                </Form.Group>
               </div>
-              <br/>
+              <br />
               {rows_rates.map(({ title, rows }, idx) => {
                 return (
                   <>
                     <h3 key={idx}>{title}</h3>
                     <hr key={"hr." + idx} />
                     {rows.map((row, idy) => {
-
-                        return (
-                          <FormElement
-                            key={`${idx}.${idy}`}
-                            step="0.01"
-                            type={row.type}
-                            name={row.name}
-                            placeholder={row.placeholder}
-                            // value={this.state[row.value]}
-                            value={this.state[row.name]}
-                            onChange={this.handleChange}
-                            payable={this.formatINR(this.state.rate[row.name])}
-                          >
-                            {row.label}
-                          </FormElement>
-                        );
-                      }
-                  )}
+                      return (
+                        <FormElement
+                          key={`${idx}.${idy}`}
+                          step="0.01"
+                          type={row.type}
+                          name={row.name}
+                          placeholder={row.placeholder}
+                          // value={this.state[row.value]}
+                          value={this.state.raw_rate[row.name]}
+                          onChange={this.handleRateChange}
+                          payable={this.formatINR(this.state.rate[row.name])}
+                        >
+                          {row.label}
+                        </FormElement>
+                      );
+                    })}
                   </>
                 );
               })}
@@ -807,22 +843,22 @@ class ZakatCalculator extends React.Component {
                   <>
                     <h3 key={idx}>{title}</h3>
                     <hr key={"hr." + idx} />
-                    {rows.map((row, idy) => {    
-                        return (
-                          <FormElement
-                            key={`${idx}.${idy}`}
-                            step="0.01"
-                            type={row.type}
-                            name={row.name}
-                            placeholder={row.placeholder}
-                            // value={this.state[row.value]}
-                            value={this.state[row.name]}
-                            onChange={this.handleChange}
-                            payable={this.formatINR(this.state.sums[row.name])}
-                          >
-                            {row.label}
-                          </FormElement>
-                        );
+                    {rows.map((row, idy) => {
+                      return (
+                        <FormElement
+                          key={`${idx}.${idy}`}
+                          step="0.01"
+                          type={row.type}
+                          name={row.name}
+                          placeholder={row.placeholder}
+                          // value={this.state[row.value]}
+                          value={this.state.raw[row.name]}
+                          onChange={this.handleChange}
+                          payable={this.formatINR(this.state.sums[row.name])}
+                        >
+                          {row.label}
+                        </FormElement>
+                      );
                     })}
                   </>
                 );
@@ -835,12 +871,13 @@ class ZakatCalculator extends React.Component {
           </Col>
         </Row>
         <Row>
-          <Col sm="6"></Col>
-          <Col sm="4"><b>Total</b></Col>
+          <Col sm="6" />
+          <Col sm="4">
+            <b>Total</b>
+          </Col>
           <Col sm="2">{this.formatINR(this.calculate(this.state.sums))}</Col>
-              
         </Row>
-        <br/>
+        <br />
       </Container>
     );
   }
