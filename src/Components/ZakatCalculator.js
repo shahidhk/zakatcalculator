@@ -1,16 +1,17 @@
 import React from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import FormElement from "./FormElement";
+import '../index.css';
 
 class ZakatCalculator extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      date: "",
-      total_assests: "",
-      nisab_calc: "",
-      zakat_pay: "",
-      zakat_amount: "",
+    this.state = {    
+      // date: "",
+      // total_assests: "",
+      // nisab_calc: "",
+      // zakat_pay: "",
+      // zakat_amount: "",
       gold_24_rate: "",
       gold_22_rate: "",
       silver_rate: "",
@@ -52,6 +53,46 @@ class ZakatCalculator extends React.Component {
       loans_friends: "",
       loans_bank: "",
       income_tax: "",
+      raw:{
+        gold_24: 0,
+        gold_22: 0,
+        gold_other: 0,
+        precious_stones: 0,
+        ornaments: 0,
+        artifact: 0,
+        household_utensils: 0,
+        cash_hand: 0,
+        cash_savings_account: 0,
+        cash_current_account: 0,
+        cash_fd: 0,
+        loans: 0,
+        investment: 0,
+        pf: 0,
+        insurance_premium: 0,
+        shares: 0,
+        govt_security_deposits: 0,
+        investment_chits: 0,
+        other_wealth: 0,
+        rent_advance: 0,
+        landed_prop: 0,
+        rentals: 0,
+        saleable_stock: 0,
+        damaged_stock: 0,
+        credit_sales: 0,
+        supplier: 0,
+        bad_debts: 0,
+        capital_balance: 0,
+        loans_advanced: 0,
+        withdrawals: 0,
+        profit: 0,
+        produce_rain: 0,
+        produce_artificial: 0,
+        produce_rain_artificial: 0,
+        animals: 0,
+        loans_friends: 0,
+        loans_bank: 0,
+        income_tax: 0
+      },
       rate:{
         gold_24_rate: 0,
         gold_22_rate: 0,
@@ -102,8 +143,13 @@ class ZakatCalculator extends React.Component {
   }
   handleChange(event) {
     this.setState({
-      [event.currentTarget.name]: event.currentTarget.value,     
+      [event.currentTarget.name]: event.currentTarget.value,    
+      raw: {
+        ...this.state.raw,
+          [event.currentTarget.name]: event.currentTarget.value * 1
+      }, 
     });
+    
     switch(event.currentTarget.name) {
       case 'gold_24':
       case 'gold_other':
@@ -211,6 +257,13 @@ class ZakatCalculator extends React.Component {
       (sum,key) => sum+obj[key],
       0
     )
+  
+  formatINR = (amount) => {
+    return amount.toLocaleString('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+    });
+  };
 
   render() {
     const intro = [
@@ -635,7 +688,8 @@ class ZakatCalculator extends React.Component {
         <Row>
           <Col>
             <Form>
-              <h3>{intro[0].title}</h3>
+              <div className={"sticky"}>
+              
               <Form.Group as={Row}>
                 <Form.Label column sm="8">
                   {intro[0].rows[0].label}
@@ -651,20 +705,21 @@ class ZakatCalculator extends React.Component {
                   />
                 </Col>
               </Form.Group>
+
               <Form.Group as={Row}>
                 <Form.Label column sm="8">
                   {intro[0].rows[1].label}
                 </Form.Label>
                 <Col sm="4">
-                  <Form.Control
+                  {/* <Form.Control
                     step="0.01"
                     id={intro[0].rows[1].name}
                     type={intro[0].rows[1].type}
                     placeholder={intro[0].rows[1].placeholder}
                     name={intro[0].rows[1].name}
-                    value={this.state[intro[0].rows[1].name]}
-                    onChange={this.handleChange}
-                  />
+                    value={this.formatINR(this.calculate(this.state.raw))}
+                  /> */}
+                  <div>{this.formatINR(this.calculate(this.state.raw))}</div>
                 </Col>
               </Form.Group>
               <Form.Group as={Row}>
@@ -717,6 +772,8 @@ class ZakatCalculator extends React.Component {
                   />
                 </Col>
               </Form.Group>
+              </div>
+              <br/>
               {rows_rates.map(({ title, rows }, idx) => {
                 return (
                   <>
@@ -734,7 +791,7 @@ class ZakatCalculator extends React.Component {
                             // value={this.state[row.value]}
                             value={this.state[row.name]}
                             onChange={this.handleChange}
-                            payable={this.state.rate[row.name]}
+                            payable={this.formatINR(this.state.rate[row.name])}
                           >
                             {row.label}
                           </FormElement>
@@ -750,8 +807,7 @@ class ZakatCalculator extends React.Component {
                   <>
                     <h3 key={idx}>{title}</h3>
                     <hr key={"hr." + idx} />
-                    {rows.map((row, idy) => {
-                      if (row.calc) {
+                    {rows.map((row, idy) => {    
                         return (
                           <FormElement
                             key={`${idx}.${idy}`}
@@ -762,27 +818,11 @@ class ZakatCalculator extends React.Component {
                             // value={this.state[row.value]}
                             value={this.state[row.name]}
                             onChange={this.handleChange}
-                            payable={this.state.sums[row.name]}
+                            payable={this.formatINR(this.state.sums[row.name])}
                           >
                             {row.label}
                           </FormElement>
                         );
-                      } else {
-                        return (
-                          <FormElement
-                            key={`${idx}.${idy}`}
-                            step="0.01"
-                            type={row.type}
-                            name={row.name}
-                            placeholder={row.placeholder}
-                            value={this.state[row.name]}
-                            onChange={this.handleChange}
-                            payable={this.state.sums[row.name]}
-                          >
-                            {row.label}
-                          </FormElement>
-                        );
-                      }
                     })}
                   </>
                 );
@@ -797,7 +837,7 @@ class ZakatCalculator extends React.Component {
         <Row>
           <Col sm="6"></Col>
           <Col sm="4"><b>Total</b></Col>
-          <Col sm="2">₹{this.calculate(this.state.sums)}</Col>
+          <Col sm="2">{this.formatINR(this.calculate(this.state.sums))}</Col>
               
         </Row>
         <br/>

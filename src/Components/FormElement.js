@@ -11,7 +11,7 @@ const FormElement = ({step, children, placeholder, type, name, value, onChange, 
       </Col>
       <Col sm="2">
         <div>
-          {`₹${payable}`}
+          {payable}
         </div>
       </Col>
     </Form.Group>
