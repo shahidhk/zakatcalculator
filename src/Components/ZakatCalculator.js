@@ -7,10 +7,10 @@ class ZakatCalculator extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      total_assests: 0,
+      total_assets: 0,
       intro: {
         date: "",
-        total_assests: "",
+        total_assets: "",
         nisab_calc: "",
         zakat_pay: "",
         zakat_amount: ""
@@ -251,11 +251,11 @@ class ZakatCalculator extends React.Component {
         });
     }
   }
-  
+
   getTotal(event) {
     this.setState({
-      // total_assests: this.calculateTotal(this.state.raw),
-      total_assests: event.target.value
+      // total_assets: this.calculateTotal(this.state.raw),
+      total_assets: event.target.value
     });
   }
 
@@ -309,7 +309,7 @@ class ZakatCalculator extends React.Component {
             type: "date"
           },
           {
-            name: "total_assests",
+            name: "total_assets",
             label: "My total assests that were idle for last 1 year (in Rs)",
             placeholder: "₹0.00",
             type: "number"
@@ -755,7 +755,7 @@ class ZakatCalculator extends React.Component {
                       {this.formatINR(this.calculateTotal(this.state.raw))}
                     </div>
                     {/* <Button onClick={this.getTotal}>Click</Button>
-                    <div>{this.state.total_assests}{console.log(this.state.total_assests)}</div> */}
+                    <div>{this.state.total_assets}{console.log(this.state.total_assets)}</div> */}
                   </Col>
                 </Form.Group>
 
